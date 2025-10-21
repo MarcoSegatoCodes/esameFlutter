@@ -71,27 +71,47 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('Counter actions:'),
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: _incrementCounter,
-                  child: Text("Increment"),
-                ),
-                ElevatedButton(
-                  onPressed: _decreaseCounter,
-                  child: Text("Decrease"),
-                ),
-                ElevatedButton(
-                  onPressed: _doubleCounter,
-                  child: Text("Double"),
-                ),
-                ElevatedButton(onPressed: _halveCounter, child: Text("Halve")),
-                ElevatedButton(onPressed: _resetCounter, child: Text("Reset")),
-              ],
+            Text(
+              'Counter actions:',
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
-
-            const Text('Counter:'),
+            const SizedBox(height: 10),
+            Center(
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 10,
+                children: [
+                  FloatingActionButton(
+                    onPressed: _incrementCounter,
+                    tooltip: 'Increment',
+                    child: const Icon(Icons.add),
+                  ),
+                  FloatingActionButton(
+                    onPressed: _decreaseCounter,
+                    tooltip: 'Decrement',
+                    child: const Icon(Icons.remove),
+                  ),
+                  FloatingActionButton(
+                    onPressed: _doubleCounter,
+                    tooltip: 'Double',
+                    child: const Icon(Icons.keyboard_double_arrow_up),
+                  ),
+                  FloatingActionButton(
+                    onPressed: _halveCounter,
+                    tooltip: 'Halve',
+                    child: const Icon(Icons.splitscreen),
+                  ),
+                  FloatingActionButton(
+                    onPressed: _resetCounter,
+                    tooltip: 'Reset',
+                    child: const Icon(Icons.refresh),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 30),
+            Text('Counter:', style: Theme.of(context).textTheme.headlineSmall),
+            const SizedBox(height: 10),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
