@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,15 +29,101 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class GreeterWidget extends StatefulWidget {
+  const GreeterWidget({super.key});
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+  @override
+  State<GreeterWidget> createState() => _GreeterWidgetState();
+}
+
+class _GreeterWidgetState extends State<GreeterWidget> {
+  late final FormGroup _form;
+  String _message = "";
+  String _name = "";
+  String _greet = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _form = FormGroup({
+      "name": FormControl<String>(
+        value: "",
+        validators: [RequiredValidator(), MinLengthValidator(3)],
+      ),
+      "greet": FormControl<String>(
+        value: "",
+        validators: [RequiredValidator(), MinLengthValidator(2)],
+      ),
     });
   }
 
+  @override
+  void dispose() {
+    _form.dispose();
+    super.dispose();
+  }
+
+  void _updateGreeting() {
+    final name = _form.control('name').value as String?;
+    final greet = _form.control('greet').value as String?;
+    setState(() {
+      _name = name ?? '';
+      _greet = greet ?? '';
+      _message = _name.isEmpty ? '' : '$greet $_name';
+    });
+  }
+
+  void _reset() {
+    _form.reset(value: {'name': ''});
+    _form.reset(value: {'greet': ''});
+
+    setState(() {
+      _name = "";
+      _greet = "";
+      _message = "";
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: ReactiveForm(
+        formGroup: _form,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ReactiveTextField(
+              formControlName: "greet",
+              decoration: InputDecoration(hintText: "Enter Your Greeting"),
+            ),
+            ReactiveTextField(
+              formControlName: "name",
+              decoration: InputDecoration(hintText: "Enter Your Name"),
+            ),
+
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: _updateGreeting,
+                  child: const Text('Greet this guy'),
+                ),
+                const SizedBox(width: 10),
+
+                ElevatedButton(onPressed: _reset, child: const Text('Reset')),
+              ],
+            ),
+            const SizedBox(height: 30),
+            Text(_message),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,19 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+          children: <Widget>[GreeterWidget()],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
