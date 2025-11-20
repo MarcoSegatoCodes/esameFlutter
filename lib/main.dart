@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:esame_flutter/recipe.dart';
+import 'package:esame_flutter/recipe_detail.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,116 +10,112 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'RecipesBookApp',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const RecipeListState(title: 'Broccoli Recipes Book'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+class RecipeListState extends StatefulWidget {
+  const RecipeListState({super.key, required this.title});
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<RecipeListState> createState() => _RecipeListState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class _RecipeListState extends State<RecipeListState> {
+  final List<Recipe> recipes = [
+    Recipe(
+      title: 'Vellutata di Broccoli',
+      ingredients: [
+        '1) Broccoli  (450g);',
+        '2) Patate (400g);',
+        '3) 1 Porro;',
+        '4) Timo (2 rametti);',
+        '5) 700ml di brodo vegetale;',
+        '6) Sale e pepe q.b.;',
+        '7) Burro (30g);',
+      ],
+      steps: [
+        '- Per preparare la vellutata ai broccoli iniziate mondando e tagliando a fette sottili il porro.',
+        '- Poi sbucciate le patate e tagliatele a dadini. Lavate quindi i broccoli eliminando i gambi e dividendoli in cimette.',
+        '- In un tegame capiente ponete il burro a fondere, aggiungete i porri e fateli appassire per qualche minuto a fiamma dolce.',
+        '- e fateli appassire a fuoco basso per 10-15 minuti, senza fargli prendere colore.',
+        '- Aggiungete nel tegame le patate e i broccoli e fateli rosolare per qualche minuto mescolando',
+        '- poi aggiungete il brodo vegetale caldo e continuate la cottura per circa 30 minuti a fuoco dolce, salando e pepando',
+        '- Trascorso il tempo indicato, passate le verdure con un frullatore ad immersione. Rimettete la vellutata così ottenuta sul fuoco',
+        '- aggiustate di sale e aggiungete qualche fogliolina di timo',
+        '- Servite la vostra vellutata di broccoli ben calda. BUON APPETITO!',
+      ],
+      url: 'https://ricette.giallozafferano.it/Vellutata-di-broccoli.html',
+    ),
+    Recipe(
+      title: 'Carbonara',
+      ingredients: [
+        '1) Troccoli (pasta) (320g);',
+        '2) Broccoli (450g);',
+        '3) Aglio (1);',
+        '4)Olio extra vergine d\'oliva;',
+        '5) Sale e pepe nero q.b.;',
+      ],
+      steps: [
+        '- Per prima cosa staccate le cimette dei broccoli dal torsolo centrale',
+        '- Poi sciacquatele sotto l\'acqua corrente. Portate al bollore una pentola colma di acqua salata',
+        '- e non appena inizierà a bollire versate i broccoli',
+        '- Cuocete per circa dieci minuti',
+        '- Intanto soffiggete uno spicchio d\'aglio in un filo d \'olio, in una pentola dai bordi alti ',
+        '- Scolate i broccoli, tenendo da parte l\'acqua di cottura e trasferiteli in pentola',
+        '- Tenete qualche piccola cimetta intera da parte ',
+        '- che poi unirete alla pasta finita. Aggiungete ai broccoli un po\' d\'acqua',
+        '- Salate, pepate e cuocete a fuoco medio dolce per circa 20 minuti, o almeno finché non risulteranno cotti e ridotti quasi in crema. Se dovesse essere necessario aggiungete altra acqua. A fine cottura eliminate lo spicchio d\'aglio ',
+        '- Cuocete i troccoli al dente nell’acqua in cui avete lessato i broccoli portata al bollore',
+        '- regolate i tempi in base alle indicazioni della confezione. Al condimento unite i broccoli tenuti da parte',
+        '- Scolate la pasta e unitela alla crema di broccoli',
+        '- Aggiungete un mestolo di acqua di cottura, regolandovi in base alla cremosità del condimento',
+        '- Saltate la pasta con i broccoli per qualche istante quindi servitela con pepe a piacere BUON APPETITO!',
+      ],
+      url: 'https://ricette.giallozafferano.it/Pasta-con-broccoli.html',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      body: ListView.builder(
+        itemCount: recipes.length,
+        itemBuilder: (context, index) {
+          final recipe = recipes[index];
+          return ListTile(
+            title: Text(recipe.title),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RecipeDetailScreen(recipe: recipe),
+                ),
+              );
+            },
+            trailing: IconButton(
+              onPressed: () async {
+                final uri = Uri.parse(recipe.url);
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              },
+              icon: Icon(Icons.link),
             ),
-          ],
-        ),
+          );
+        },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
